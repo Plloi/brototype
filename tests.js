@@ -1,6 +1,6 @@
-/*global describe:false, it:false, expect:false, beforeEach:false */
+/*global describe:false, it:false, beforeEach:false */
 
-var Bro = require('./brototype').Bro;
+var Bro = require('./brototype');
 var assert = require('assert');
 
 describe('Bro.doYouEven', function() {
@@ -161,6 +161,30 @@ describe('Bro.braceYourself', function() {
         var bro = Bro(obj);
         bro.braceYourself('foo').hereComeTheErrors(fn);
         assert.equal(error, 'an error');
+    });
+});
+
+describe('Bro.makeItHappen', function() {
+    var success,
+        expected,
+        obj;
+
+    beforeEach(function() {
+        obj = { "foo": { "bar": {} } };
+    });
+
+    it('should add properties to object, in a nested fashion', function() {
+        expected = { "foo": { "bar": {} }, "stuff": { "and": { "things": {} } } };
+        var bro = Bro(obj);
+        bro.makeItHappen('stuff.and.things');
+        assert.deepEqual(expected, obj);
+    });
+
+    it('should add properties to object, in extending deeper nested objects', function() {
+        expected = { "foo": { "bar": { "stuff": { "and": { "things": {} } } } } };
+        var bro = Bro(obj);
+        bro.makeItHappen('foo.bar.stuff.and.things');
+        assert.deepEqual(expected, obj);
     });
 });
 

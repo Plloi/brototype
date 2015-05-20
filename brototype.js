@@ -125,31 +125,30 @@
         "braceYourself": function(methodString) {
             var method = this.iCanHaz(methodString);
             return new Bromise(this.obj, method, arguments);
+        },
+        "makeItHappen": function(key) {
+            var brobj = this.obj;
+            if (this.doYouEven(key) === Bro.NOWAY) {
+                var props = key.split('.');
+                for (var i = 0; i < props.length; ++i) {
+                    if (brobj[props[i]] === undefined) {
+                        brobj[props[i]] = {};
+                    }
+                    brobj = brobj[props[i]];
+                }
+            }
         }
     };
 
-    try {
-        if (exports) {
-            exports.Bro = Bro;
-            return;
-        }
-    } catch(e) {}
-    try {
-        if (module) {
+    (function() {
+        if (typeof define === 'function' && typeof define.amd === 'object') {
+            define(function() {
+                return Bro;
+            });
+        } else if (typeof module !== 'undefined' && module.exports) {
             module.exports = Bro;
-            return;
-        }
-    } catch(e) {}
-    try {
-        if (require) {
-            define([], function() {return Bro;});
-            return;
-        }
-    } catch(e) {}
-    try {
-        if (window) {
+        } else if (typeof window !== 'undefined') {
             window.Bro = Bro;
-            return;
         }
-    } catch(e) {}
+    })();
 })();
